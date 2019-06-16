@@ -105,12 +105,20 @@ def BuildLibrary(name, libdir):
 
     dir = os.path.join(libdir, name)
     hdtv.ui.info("Rebuild library %s in %s" % ((libfmt % name), dir))
+    srcdir = os.path.dirname(__file__)
 
     # Remove existing plugin
     if os.path.exists(dir):
         shutil.rmtree(dir)
     # Copy everything
-    shutil.copytree(os.path.join(os.path.dirname(__file__), name), dir)
+    shutil.copytree(os.path.join(srcdir, name), dir)
+
+    if name == "display":
+        calibrationdir = os.path.join(libdir, "calibration")
+        try:
+            shutil.copytree(os.path.join(srcdir, "calibration"), calibrationdir)
+        except FileExistsError:
+            pass
 
     # Make library
     subprocess.check_call(['make', 'clean', '-j', '--silent'], cwd=dir)

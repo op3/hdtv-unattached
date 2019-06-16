@@ -1,10 +1,10 @@
-# Makefile for HDTV::Display
-MODNAME = display
+# Makefile for HDTV::Calibration
+MODNAME = calibration
 
 include ../Makefile.def
 
 CFLAGS   += $(LIBX11_CFLAGS)
-CXXFLAGS += $(LIBX11_CFLAGS) -I../calibration
+CXXFLAGS += $(LIBX11_CFLAGS)
 
 LDFLAGS  += $(LIBX11_LDFLAGS)
 

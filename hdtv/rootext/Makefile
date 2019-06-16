@@ -1,4 +1,4 @@
-SUBDIRS = display fit mfile-root
+SUBDIRS = calibration display fit mfile-root
 
 .PHONY: all clean $(SUBDIRS)
 
