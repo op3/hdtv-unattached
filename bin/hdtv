@@ -50,12 +50,6 @@ hdtvpath = os.sep.join(sys.path[0].split(os.sep)[:-1])
 if os.path.exists(os.path.join(hdtvpath, 'hdtv')):
     sys.path.insert(1, hdtvpath)
 
-# This needs to happen before "import ROOT" is called the first time –
-# if not, there will be a header not found error
-# for *some* ROOT versions and install methods
-import hdtv.rootext
-hdtv.rootext.UpdateRootIncludePath()
-
 import hdtv.version
 # Command line arguments
 parser = argparse.ArgumentParser()
