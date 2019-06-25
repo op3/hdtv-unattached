@@ -82,6 +82,7 @@ setup(
     },
     packages=[
         'hdtv',
+        'hdtv.backgroundmodels',
         'hdtv.plugins',
         'hdtv.peakmodels',
         'hdtv.efficiency',
