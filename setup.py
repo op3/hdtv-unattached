@@ -33,7 +33,7 @@ setup(
     install_requires=['scipy', 'matplotlib', 'uncertainties'],
     extras_require={
         'dev': ['docutils'],
-        'test': ['pytest'],
+        'test': ['pytest', 'pytest-cov'],
     },
     scripts=['bin/hdtv'],
     packages=[

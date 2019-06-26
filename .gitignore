@@ -10,6 +10,9 @@ build
 # pytest cache
 .cache
 
+# coverage
+.coverage
+
 # ROOT generated filed
 *_rdict*
 *.pcm
