@@ -18,7 +18,7 @@ ROOT_CLING_FLAGS += -s $(TARGET) -rmf $(ROOTMAP)
 # ROOT_CLING_FLAGS += -rml lib$(MODNAME).so
 
 ROOT_CXXFLAGS := $(shell $(ROOT_CONFIG) --cflags)
-ROOT_LIBS     := $(shell $(ROOT_CONFIG) --libs)
+ROOT_LIBS     := $(shell $(ROOT_CONFIG) --libs) -lMathMore
 ROOT_GLIBS    := $(shell $(ROOT_CONFIG) --glibs)
 
 CFLAGS       = -O2 -g -Wall -fPIC $(DEPFLAGS)
