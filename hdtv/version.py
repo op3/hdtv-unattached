@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
 
-VERSION = "18.04"
+__version__ = "18.04"

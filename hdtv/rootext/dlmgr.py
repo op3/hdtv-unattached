@@ -36,7 +36,7 @@ cachepath = os.path.join(os.getenv("XDG_CACHE_HOME",
     os.path.join(os.environ["HOME"], ".cache")), "hdtv")
 usrlibdir = os.path.join(cachepath, 'lib',
     "%d-%d-%s" % (sys.hexversion, ROOT.gROOT.GetVersionInt(),
-        hdtv.version.VERSION))
+        hdtv.version.__version__))
 syslibdir = os.path.join(os.path.dirname(__file__), str(ROOT.gROOT.GetVersionInt()))
 
 

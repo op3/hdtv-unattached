@@ -22,20 +22,64 @@ class CustomBuild(build):
 
 manpages = glob.glob('doc/guide/*.1')
 
+KEYWORDS = '''\
+analysis
+data-analysis
+gamma-spectroscopy
+nuclear-physics
+nuclear-spectrum-analysis
+physics
+python
+root
+root-cern
+spectroscopy
+'''
+CLASSIFIERS = '''\
+Development Status :: 5 - Production/Stable
+Environment :: Console
+Environment :: X11 Applications
+Intended Audience :: Information Technology
+Intended Audience :: Science/Research
+License :: OSI Approved :: GNU General Public License v2 or later (GPLv2+)
+Natural Language :: English
+Operating System :: MacOS
+Operating System :: POSIX
+Operating System :: POSIX :: Linux
+Operating System :: UNIX
+Programming Language :: C
+Programming Language :: C++
+Programming Language :: Python
+Programming Language :: Python :: 3
+Programming Language :: Python :: 3.5
+Programming Language :: Python :: 3.6
+Programming Language :: Python :: 3.7
+Programming Language :: Python :: 3.8
+Topic :: Scientific/Engineering
+Topic :: Scientific/Engineering :: Information Analysis
+Topic :: Scientific/Engineering :: Physics
+Topic :: Scientific/Engineering :: Visualization
+'''
+
 setup(
     name='hdtv',
-    version=hdtv.version.VERSION,
+    version=hdtv.version.__version__,
     description='HDTV - Nuclear Spectrum Analysis Tool',
     url='https://gitlab.ikp.uni-koeln.de/staging/hdtv',
     maintainer='Jan Mayer',
     maintainer_email='jan.mayer@ikp.uni-koeln.de',
     license='GPL',
+    classifiers=CLASSIFIERS.strip().split('\n'),
+    keywords=KEYWORDS.strip().replace('\n', ' '),
     install_requires=['scipy', 'matplotlib', 'uncertainties'],
     extras_require={
         'dev': ['docutils'],
         'test': ['pytest', 'pytest-cov'],
     },
-    scripts=['bin/hdtv'],
+    entry_points={
+        'console_scripts': [
+            'hdtv=hdtv.app:App',
+        ]
+    },
     packages=[
         'hdtv',
         'hdtv.plugins',
