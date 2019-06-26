@@ -21,7 +21,7 @@
 
 from __future__ import print_function
 
-import xml.etree.cElementTree as ET
+import xml.etree.ElementTree as ET
 from uncertainties import ufloat
 
 import hdtv.ui
@@ -468,7 +468,7 @@ class FitXml(object):
             sids = self.spectra.ids
         # create an index of spectra that are saved in xml
         index = dict()
-        for specElement in root.getiterator():
+        for specElement in root.iter():
             name = specElement.get("name")
             index[name] = specElement
         # <spectrum>
@@ -670,7 +670,7 @@ class FitXml(object):
         count = 0
         spectra = self.spectra
         # <spectrum>
-        for specElement in root.getiterator():
+        for specElement in root.iter():
             name = specElement.get("name")
             # find this spectrum from Element in the real world
             spec = None
