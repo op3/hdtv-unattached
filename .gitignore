@@ -12,6 +12,7 @@ build
 
 # coverage
 .coverage
+.hypothesis
 
 # ROOT generated filed
 *_rdict*
