@@ -32,6 +32,7 @@
 #include <TF1.h>
 #include <TH1.h>
 #include <TVirtualFitter.h>
+#include <ROOT/RMakeUnique.hxx>
 
 #include "Util.hh"
 
@@ -402,10 +403,10 @@ void EEFitter::_Fit(TH1 &hist) {
   
   // Calculate Residuals
   if (hist.GetXaxis()->GetXbins()->GetSize() != 0) {
-    fResiduals = Util::make_unique<TH1F>(
+    fResiduals = std::make_unique<TH1F>(
         "", "", hist.GetNbinsX(), hist.GetXaxis()->GetXbins()->GetArray());
   } else {
-    fResiduals = Util::make_unique<TH1F>(
+    fResiduals = std::make_unique<TH1F>(
         "", "", hist.GetNbinsX(), hist.GetBinLowEdge(1),
         hist.GetBinLowEdge(hist.GetNbinsX()+1));
   }

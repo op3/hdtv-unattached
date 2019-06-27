@@ -30,11 +30,11 @@
 #include <TF1.h>
 #include <TH1.h>
 #include <TVirtualFitter.h>
+#include <ROOT/RMakeUnique.hxx>
 
 #include "Math/Polynomial.h"
 #include "Math/Interpolator.h"
 
-#include "Compat.hh"
 #include "Util.hh"
 
 namespace HDTV {
@@ -53,7 +53,7 @@ InterpolationBg::InterpolationBg(const InterpolationBg &src)
 {
   //! Copy constructor
   if (src.fFunc != nullptr) {
-    fFunc = Util::make_unique<TF1>(GetFuncUniqueName("b", this).c_str(), this,
+    fFunc = std::make_unique<TF1>(GetFuncUniqueName("b", this).c_str(), this,
                                    &InterpolationBg::_Eval, src.fFunc->GetXmin(),
                                    src.fFunc->GetXmax(), fBgDeg + 1, "InterpolationBg",
                                    "_Eval");
@@ -79,7 +79,7 @@ InterpolationBg &InterpolationBg::operator=(const InterpolationBg &src) {
   fCovar = src.fCovar;
   fInter = src.fInter;
 
-  fFunc = Util::make_unique<TF1>(GetFuncUniqueName("b", this).c_str(), this,
+  fFunc = std::make_unique<TF1>(GetFuncUniqueName("b", this).c_str(), this,
                                  &InterpolationBg::_Eval, src.fFunc->GetXmin(),
                                  src.fFunc->GetXmax(), fBgDeg + 1, "InterpolationBg",
                                  "_Eval");
@@ -126,7 +126,7 @@ void InterpolationBg::Fit(TH1 &hist) {
 
   // Interpolate the background regions
   fInter.SetData(x, y);
-  fFunc = Util::make_unique<TF1>(GetFuncUniqueName("b", this).c_str(), this,
+  fFunc = std::make_unique<TF1>(GetFuncUniqueName("b", this).c_str(), this,
 		                 &InterpolationBg::_Eval,
 				 x[0], x[fBgRegions.size()-1],
 				 fBgDeg, "InterpolationBg", "_Eval");

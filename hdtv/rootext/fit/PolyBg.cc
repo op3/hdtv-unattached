@@ -31,6 +31,7 @@
 #include <TF1.h>
 #include <TH1.h>
 #include <TVirtualFitter.h>
+#include <ROOT/RMakeUnique.hxx>
 
 #include "Util.hh"
 
