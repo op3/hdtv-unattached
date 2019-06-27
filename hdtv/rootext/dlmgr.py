@@ -91,12 +91,7 @@ def PrepareBuild(libdir):
     if not os.path.exists(libdir):
         os.makedirs(libdir)
 
-    utildir = os.path.join(libdir, "util")
-    if os.path.exists(utildir):
-        shutil.rmtree(utildir)
-
     srcdir = os.path.dirname(__file__)
-    shutil.copytree(os.path.join(srcdir, "util"), utildir)
     shutil.copy(os.path.join(srcdir, "Makefile.def"), libdir)
     shutil.copy(os.path.join(srcdir, "Makefile.body"), libdir)
 

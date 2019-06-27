@@ -22,7 +22,7 @@ ROOT_LIBS     := $(shell $(ROOT_CONFIG) --libs) -lMathMore
 ROOT_GLIBS    := $(shell $(ROOT_CONFIG) --glibs)
 
 CFLAGS       = -O2 -g -Wall -fPIC $(DEPFLAGS)
-CXXFLAGS     = $(ROOT_CXXFLAGS) -Wall -g -O2 -fPIC $(DEPFLAGS) -I../util
+CXXFLAGS     = $(ROOT_CXXFLAGS) -Wall -g -O2 -fPIC $(DEPFLAGS)
 LDFLAGS      = -shared
 LDLIBS       = -lstdc++
 DEPFLAGS     = -MT $@ -MMD -MP -MF $*.Td
