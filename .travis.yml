@@ -1,10 +1,33 @@
-sudo: false
-dist: xenial
-language: python
-python:
-  - '3.5'
-  - '3.6'
-  - '3.7'
+matrix:
+  include:
+    - os: linux
+      dist: bionic
+      sudo: false
+      language: generic
+      env:
+        - PY_VER=3.6
+        - OS=linux-64
+    - os: linux
+      dist: bionic
+      sudo: false
+      language: generic
+      env:
+        - PY_VER=3.7
+        - OS=linux-64
+
+env:
+  global:
+    - PKG_NAME=hdtv
+    - CONDA_BLD_PATH=${HOME}/conda-bld
+
+stages:
+  - name: deploy
+    if: branch = master
+    if: tag IS present
+
+#cache:
+#  directories:
+#    - ${HOME}/miniconda
 
 before_install:
   - wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
@@ -13,14 +36,15 @@ before_install:
   - conda config --add channels conda-forge
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
-  - conda create -q -n test-env python=$TRAVIS_PYTHON_VERSION
-  - source activate test-env
 install:
-  - conda install python=$TRAVIS_PYTHON_VERSION setuptools root scipy matplotlib uncertainties xorg-libx11 cmake pytest pytest-cov codecov compilers
+  - conda install python=$PY_VER setuptools root scipy matplotlib uncertainties xorg-libx11 cmake pytest pytest-cov codecov compilers
   - conda install -c op3 libmfile
   - python setup.py install
 script:
   - pytest --cov-report term
 after_success:
   - codecov
-#  - test $TRAVIS_BRANCH = "master" && conda install conda-build && conda install anaconda-client && bash conda/conda_upload.sh
+#deploy:
+#  - conda install conda-build anaconda-client
+#  - conda build .
+#  - anaconda -t $CONDA_UPLOAD_TOKEN upload -u $CONDA_USER $CONDA_BLD_PATH/$OS/$PKG_NAME-`date +%Y.%m.%d`-0.tar.bz2
