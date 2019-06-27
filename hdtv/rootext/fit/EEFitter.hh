@@ -134,6 +134,7 @@ public:
   int GetNumPeaks() { return fNumPeaks; }
   const EEPeak &GetPeak(int i) { return fPeaks[i]; }
   TF1 *GetSumFunc() { return fSumFunc.get(); }
+  TH1 *GetResiduals() { return fResiduals.get(); };
 
   TF1 *GetBgFunc();
   bool Restore(const Background &bg, double ChiSquare);
