@@ -59,6 +59,13 @@ class FitInterface(object):
         hdtv.options.RegisterOption(
             "fit.display.decomp", self.opt['display.decomp'])
 
+        self.opt['display.residuals'] = hdtv.options.Option(
+            default=False,
+            parse=hdtv.options.parse_bool,
+            changeCallback=lambda x: self.SetResiduals(x))
+        hdtv.options.RegisterOption(
+            "fit.display.residuals", self.opt['display.residuals'])
+
         if self.window:
             self._register_hotkeys()
 
@@ -92,6 +99,10 @@ class FitInterface(object):
                               lambda: self.ShowDecomposition(True))
         self.window.AddHotkey([ROOT.kKey_Minus, ROOT.kKey_D],
                               lambda: self.ShowDecomposition(False))
+        self.window.AddHotkey(ROOT.kKey_R,
+                              lambda: self.ShowResiduals(True))
+        self.window.AddHotkey([ROOT.kKey_Minus, ROOT.kKey_R],
+                              lambda: self.ShowResiduals(False))
         self.window.AddHotkey([ROOT.kKey_f, ROOT.kKey_s],
                               lambda: self.window.EnterEditMode(prompt="Show Fit: ",
                                                                 handler=self._HotkeyShow))
@@ -527,6 +538,21 @@ class FitInterface(object):
             fitIDs = self.spectra.dict[specID].ids
             self.ShowDecomposition(default_enable, sid=specID, ids=fitIDs)
 
+    def SetResiduals(self, default_enable):
+        '''
+        Set default residuals display status
+        '''
+        # default_enable may be an hdtv.options.opt instance, so we
+        # excplicitely convert to bool here
+        default_enable = bool(default_enable)
+        hdtv.fit.Fit.showResiduals = default_enable
+        # show these decompositions for workFit
+        self.ShowResiduals(default_enable)
+        # show these decompositions for all other fits
+        for specID in self.spectra.ids:
+            fitIDs = self.spectra.dict[specID].ids
+            self.ShowResiduals(default_enable, sid=specID, ids=fitIDs)
+
     def ShowDecomposition(self, enable, sid=None, ids=None):
         '''
         Show decomposition of fits
@@ -547,6 +573,27 @@ class FitInterface(object):
 
         for fit in fits:
             fit.SetDecomp(enable)
+    
+    def ShowResiduals(self, enable, sid=None, ids=None):
+        '''
+        Show residuals of fits
+        '''
+
+        fits = list()
+        if sid is None:
+            spec = self.spectra.GetActiveObject()
+        else:
+            spec = self.spectra.dict[sid]
+
+        fits = list()
+        if ids is None:
+            if self.spectra.workFit is not None:
+                fits.append(self.spectra.workFit)
+        else:
+            fits = [spec.dict[ID] for ID in ids]
+
+        for fit in fits:
+            fit.SetResiduals(enable)
 
 
 class TvFitInterface(object):
@@ -722,6 +769,18 @@ class TvFitInterface(object):
             help="id(?) of fit(s) to show decomposition of",)
         hdtv.cmdline.AddCommand(prog, self.FitShowDecomp, parser=parser)
 
+        prog = "fit show residuals"
+        description = "display residuals of fits"
+        parser = hdtv.cmdline.HDTVOptionParser(
+            prog=prog, description=description)
+        parser.add_argument("-s", "--spectrum", action="store", default="active",
+            help="select spectra to work on")
+        parser.add_argument(
+            "fitids",
+            default=None,
+            help="id(?) of fit(s) to show residuals of",)
+        hdtv.cmdline.AddCommand(prog, self.FitShowResiduals, parser=parser)
+
         prog = "fit hide decomposition"
         description = "display decomposition of fits"
         parser = hdtv.cmdline.HDTVOptionParser(
@@ -733,6 +792,18 @@ class TvFitInterface(object):
             default=None,
             help="id(s) of fit(s) to hide decomposition of",)
         hdtv.cmdline.AddCommand(prog, self.FitHideDecomp, parser=parser)
+        
+        prog = "fit hide residuals"
+        description = "display residuals of fits"
+        parser = hdtv.cmdline.HDTVOptionParser(
+            prog=prog, description=description)
+        parser.add_argument("-s", "--spectrum", action="store", default="active",
+            help="select spectra to work on")
+        parser.add_argument(
+            "fitids",
+            default=None,
+            help="id(s) of fit(s) to hide residuals of",)
+        hdtv.cmdline.AddCommand(prog, self.FitHideResiduals, parser=parser)
 
         prog = "fit focus"
         description = "focus on fit with id"
@@ -1081,6 +1152,12 @@ class TvFitInterface(object):
         Hide decomposition of fits
         """
         self.FitShowDecomp(args, show=False)
+    
+    def FitHideResiduals(self, args):
+        """
+        Hide decomposition of fits
+        """
+        self.FitShowResiduals(args, show=False)
 
     def FitShowDecomp(self, args, show=True):
         """
@@ -1096,6 +1173,21 @@ class TvFitInterface(object):
             if not fitIDs:
                 fitIDs = None
             self.fitIf.ShowDecomposition(show, sid=sid, ids=fitIDs)
+    
+    def FitShowResiduals(self, args, show=True):
+        """
+        Show residuals of fits
+
+        show = False hides residuals
+        """
+        sids = hdtv.util.ID.ParseIds(args.spectrum, self.spectra)
+        for sid in sids:
+            spec = self.spectra.dict[sid]
+            fitIDs = hdtv.util.ID.ParseIds(args.fitids, spec)
+
+            if not fitIDs:
+                fitIDs = None
+            self.fitIf.ShowResiduals(show, sid=sid, ids=fitIDs)
 
     def FitFocus(self, args):
         """

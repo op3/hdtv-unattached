@@ -82,7 +82,9 @@ def test_cmd_fit_various():
         "fit hide 0",
         "fit show 0",
         "fit show decomposition 0",
-        "fit hide decomposition 0")
+        "fit hide decomposition 0",
+        "fit show residuals 0",
+        "fit hide residuals 0")
     assert ferr == ""
     assert f == ""
     f, ferr = hdtvcmd("fit activate 0")

@@ -28,6 +28,8 @@
 #include "Background.hh"
 #include "Param.hh"
 
+#include <TH1.h>
+
 namespace HDTV {
 namespace Fit {
 
@@ -56,6 +58,7 @@ protected:
   std::unique_ptr<Background> fBackground;
   std::unique_ptr<TF1> fSumFunc;
   std::unique_ptr<TF1> fBgFunc;
+  std::unique_ptr<TH1> fResiduals;
   double fChisquare;
 
   void SetParameter(TF1 &func, Param &param, double ival = 0.0);

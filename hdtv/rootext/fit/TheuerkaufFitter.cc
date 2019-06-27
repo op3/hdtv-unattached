@@ -551,6 +551,25 @@ void TheuerkaufFitter::_Fit(TH1 &hist) {
     fChisquare = fSumFunc->GetChisquare();
   }
 
+  // Calculate Residuals
+  if (hist.GetXaxis()->GetXbins()->GetSize() != 0) {
+    fResiduals = Util::make_unique<TH1F>(
+        "", "", hist.GetNbinsX(), hist.GetXaxis()->GetXbins()->GetArray());
+  } else {
+    fResiduals = Util::make_unique<TH1F>(
+        "", "", hist.GetNbinsX(), hist.GetBinLowEdge(1),
+        hist.GetBinLowEdge(hist.GetNbinsX()+1));
+  }
+
+  for (int i = 0; i <= fResiduals->GetNbinsX(); ++i) {
+    if (i < b1 || b2 < i+1) {
+      fResiduals->SetBinContent(i, 0);
+    } else {
+      fResiduals->SetBinContent(i,
+         hist.GetBinContent(i) - fSumFunc->Eval(fResiduals->GetBinCenter(i)));
+    }
+  }
+
   // Finalize fitter
   fFinal = true;
 }
