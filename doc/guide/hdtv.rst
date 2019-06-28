@@ -204,6 +204,12 @@ D
 Minus + D
     Hide Decomposition
 
+R
+    Show Fit Residuals 
+
+Minus + R
+    Hide Fit Residuals
+
 f + s
     Enter Edit Mode: Show Fit
 
