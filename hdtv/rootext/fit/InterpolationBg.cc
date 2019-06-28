@@ -52,8 +52,6 @@ InterpolationBg::InterpolationBg(const InterpolationBg &src)
       	fChisquare(src.fChisquare), fCovar(src.fCovar)
 {
   //! Copy constructor
-    std::cout << "Attempted to use copy constructor." << std::endl;
-
   if (src.fFunc != nullptr) {
     fFunc = Util::make_unique<TF1>(GetFuncUniqueName("b", this).c_str(), this,
                                    &InterpolationBg::_Eval, src.fFunc->GetXmin(),
@@ -86,7 +84,6 @@ InterpolationBg &InterpolationBg::operator=(const InterpolationBg &src) {
                                  src.fFunc->GetXmax(), fBgDeg + 1, "InterpolationBg",
                                  "_Eval");
 
-  std::cout << "Attempted to use assignment operator." << std::endl;
   for (int i = 0; i <= fBgDeg; i++) {
     fFunc->SetParameter(i, src.fFunc->GetParameter(i));
     fFunc->SetParError(i, src.fFunc->GetParError(i));
@@ -130,7 +127,9 @@ void InterpolationBg::Fit(TH1 &hist) {
   // Interpolate the background regions
   fInter.SetData(x, y);
   fFunc = Util::make_unique<TF1>(GetFuncUniqueName("b", this).c_str(), this,
-		                 &InterpolationBg::_Eval, GetMin(), GetMax(), fBgDeg, "InterpolationBg", "_Eval");
+		                 &InterpolationBg::_Eval,
+				 x[0], x[fBgRegions.size()-1],
+				 fBgDeg, "InterpolationBg", "_Eval");
 }
 
 bool InterpolationBg::Restore(const TArrayD &values, const TArrayD &errors,
@@ -164,6 +163,14 @@ void InterpolationBg::AddRegion(double p1, double p2) {
 }
 
 double InterpolationBg::_Eval(double *x, double *p) {
+	// Even if the TF1 object is only defined on a finite interval,
+	// HDTV sometimes tries to call it with values outside of this interval
+	// (for example when the displayed function is updated),
+	// which causes an input domain error by ROOT::Math::GSLInterpolator::Eval().
+	// It is not exactly clear why this happens, maybe due to rounding errors,
+	// but the following if-branch prevents these errors in a straightforward way.
+	if(x[0] <= fFunc->GetXmin() || x[0] >= fFunc->GetXmax())
+		return 0.;
   	return fInter(x, p);
 }
 
