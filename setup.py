@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-import hdtv.version
+from hdtv.version import __version__
 from setuptools import setup
 from distutils.command.build import build
 import glob
@@ -50,7 +50,6 @@ Programming Language :: C
 Programming Language :: C++
 Programming Language :: Python
 Programming Language :: Python :: 3
-Programming Language :: Python :: 3.5
 Programming Language :: Python :: 3.6
 Programming Language :: Python :: 3.7
 Programming Language :: Python :: 3.8
@@ -62,7 +61,7 @@ Topic :: Scientific/Engineering :: Visualization
 
 setup(
     name='hdtv',
-    version=hdtv.version.__version__,
+    version=version.__version__,
     description='HDTV - Nuclear Spectrum Analysis Tool',
     url='https://gitlab.ikp.uni-koeln.de/staging/hdtv',
     maintainer='Jan Mayer',
@@ -73,7 +72,9 @@ setup(
     install_requires=[
         'scipy',
         'matplotlib',
+        'ipython'
         'prompt_toolkit',
+        'traitlets',
         'uncertainties'],
     extras_require={
         'dev': ['docutils'],
