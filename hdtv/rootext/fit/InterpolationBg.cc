@@ -104,7 +104,7 @@ void InterpolationBg::Fit(TH1 &hist) {
   std::vector<double> y;
   y.reserve(fBgRegions.size());
 
-  for(auto bgReg : fBgRegions){
+  for(auto &bgReg : fBgRegions){
 	double denominator = 0.;
 	double numerator = 0.;
 	double weight = 0.;
@@ -120,6 +120,7 @@ void InterpolationBg::Fit(TH1 &hist) {
 		denominator += weight;
 	}
 	bgReg.weighted_mean = numerator/denominator;
+	bgReg.weighted_mean_uncertainty = 1./sqrt(denominator);
 	x.push_back(bgReg.center);
 	y.push_back(bgReg.weighted_mean);
   }
@@ -129,7 +130,17 @@ void InterpolationBg::Fit(TH1 &hist) {
   fFunc = std::make_unique<TF1>(GetFuncUniqueName("b", this).c_str(), this,
 		                 &InterpolationBg::_Eval,
 				 x[0], x[fBgRegions.size()-1],
-				 fBgDeg, "InterpolationBg", "_Eval");
+				 2*fBgDeg, "InterpolationBg", "_Eval");
+
+  fFunc->SetChisquare(0.);
+  unsigned int index = 0;
+  for(auto bgReg : fBgRegions){
+    fFunc->SetParameter(2*index, bgReg.center);
+    fFunc->SetParError(2*index, hist.GetBinWidth(hist.GetBin(bgReg.center)));
+    fFunc->SetParameter(2*index+1, bgReg.weighted_mean);
+    fFunc->SetParError(2*index+1, bgReg.weighted_mean_uncertainty);
+    ++index;
+  }
 }
 
 bool InterpolationBg::Restore(const TArrayD &values, const TArrayD &errors,
@@ -175,7 +186,7 @@ double InterpolationBg::_Eval(double *x, double *p) {
 }
 
 double InterpolationBg::EvalError(double x) const {
-  return 1.;
+  return 0.;
 }
 
 } // end namespace Fit
