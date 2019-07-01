@@ -15,7 +15,7 @@ class CustomBuild(build):
         # Build libraries for this system
         # run hdtv --rebuild-sys after installation or any root version change
         # or reinstall from scratch
-        for module in ['mfile-root', 'fit', 'display']:
+        for module in ['mfile-root', 'fit', 'display', 'calibration']:
             dir = os.path.join(self.build_lib, 'hdtv/rootext/', module)
             print("Building library in %s" % dir)
             subprocess.check_call(['make', '-j'], cwd=dir)
@@ -72,13 +72,18 @@ setup(
     install_requires=[
         'scipy',
         'matplotlib',
+        'numpy',
         'ipython'
         'prompt_toolkit',
         'traitlets',
-        'uncertainties'],
+        'uncertainties',
+    ],
     extras_require={
         'dev': ['docutils'],
-        'test': ['pytest', 'pytest-cov'],
+        'test': [
+            'pytest',
+            'pytest-cov'
+        ],
     },
     entry_points={
         'console_scripts': [
@@ -97,18 +102,39 @@ setup(
     package_data={
         'hdtv': ['share/*'],
         'hdtv.rootext': [
-            'Makefile', 'Makefile.def', 'Makefile.body',
-            'mfile-root/*.hh', 'mfile-root/*.cc', 'mfile-root/Makefile',
-            'mfile-root/LinkDef.h', 'mfile-root/libmfile-root.so',
+            'Makefile',
+            'Makefile.body',
+            'Makefile.def',
+            'calibration/*.cc',
+            'calibration/*.hh',
+            'calibration/LinkDef.h',
+            'calibration/Makefile',
+            'calibration/libcalibration.rootmap',
+            'calibration/libcalibration.so',
+            'calibration/libcalibration_rdict.pcm',
+            'display/*.cc',
+            'display/*.hh',
+            'display/LinkDef.h',
+            'display/Makefile',
+            'display/libdisplay.rootmap',
+            'display/libdisplay.so',
+            'display/libdisplay_rdict.pcm',
+            'fit/*.cc',
+            'fit/*.hh',
+            'fit/LinkDef.h',
+            'fit/Makefile',
+            'fit/libfit.rootmap',
+            'fit/libfit.so',
+            'fit/libfit_rdict.pcm',
+            'mfile-root/*.cc',
+            'mfile-root/*.hh',
+            'mfile-root/LinkDef.h',
+            'mfile-root/Makefile',
+            'mfile-root/libmfile-root.rootmap',
+            'mfile-root/libmfile-root.so',
             'mfile-root/libmfile-root_rdict.pcm',
-            'mfile-root/libmfile-root.rootmap', 'mfile-root/matop/*.h',
             'mfile-root/matop/*.c',
-            'fit/*.hh', 'fit/*.cc', 'fit/Makefile', 'fit/LinkDef.h',
-            'fit/libfit.so', 'fit/libfit_rdict.pcm', 'fit/libfit.rootmap',
-            'display/*.hh', 'display/*.cc', 'display/Makefile',
-            'display/LinkDef.h', 'display/libdisplay.so',
-            'display/libdisplay_rdict.pcm', 'display/libdisplay.rootmap',
-            'util/Compat.hh'
+            'mfile-root/matop/*.h',
         ],
     },
     data_files=[
