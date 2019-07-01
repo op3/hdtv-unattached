@@ -818,4 +818,5 @@ class Fit(Drawable):
         elif self.residuals:
             self.residuals.Hide()
         else:
-            raise hdtv.cmdline.HDTVCommandAbort("No recently executed fit available for which the residuals can be shown. Try re-executing an existing fit.")
+            raise hdtv.cmdline.HDTVCommandAbort("No recently executed fit available for which \
+the residuals can be shown. Try re-executing an existing fit.")
