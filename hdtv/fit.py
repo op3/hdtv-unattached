@@ -506,7 +506,6 @@ class Fit(Drawable):
                 chisquare=self.bgChi)
         region = sorted([self.regionMarkers[0].p1.pos_uncal,
                          self.regionMarkers[0].p2.pos_uncal])
-        print(self.bgParams)
         if self.peaks:
             self.fitter.RestorePeaks(cal=self.cal, region=region, peaks=self.peaks,
                                      chisquare=self.chi, coeffs=self.bgParams)
@@ -531,9 +530,6 @@ class Fit(Drawable):
             if not self.integral:
                 self.integral = hdtv.integral.Integrate(
                     self.spec, self.fitter.bgFitter, region)
-        self.residuals = ROOT.HDTV.Display.DisplaySpec(
-            self.fitter.peakFitter.GetResiduals(), self.color)
-        self.residuals.SetCal(self.cal)
 
     def Draw(self, viewport):
         """
@@ -821,3 +817,5 @@ class Fit(Drawable):
             self.residuals.Show()
         elif self.residuals:
             self.residuals.Hide()
+        else:
+            raise hdtv.cmdline.HDTVCommandAbort("No recently executed fit available for which the residuals can be shown. Try re-executing an existing fit.")
