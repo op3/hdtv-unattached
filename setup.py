@@ -61,7 +61,7 @@ Topic :: Scientific/Engineering :: Visualization
 
 setup(
     name='hdtv',
-    version=version.__version__,
+    version=__version__,
     description='HDTV - Nuclear Spectrum Analysis Tool',
     url='https://gitlab.ikp.uni-koeln.de/staging/hdtv',
     maintainer='Jan Mayer',
