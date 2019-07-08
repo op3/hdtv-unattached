@@ -10,6 +10,9 @@ build
 # pytest cache
 .cache
 
+# pytest-generated spectra
+test/share/test_spectrum_interpolation.tv
+
 # coverage
 .coverage
 .hypothesis

@@ -43,7 +43,8 @@ namespace Fit {
 InterpolationBg::InterpolationBg(int bgdeg) 
 	:fInter(ROOT::Math::Interpolation::kCSPLINE){
   fBgDeg = bgdeg;
-  fChisquare = std::numeric_limits<double>::quiet_NaN();
+  // By definition, an interpolation is a perfect fit
+  fChisquare = 0.;
 }
 
 InterpolationBg::InterpolationBg(const InterpolationBg &src)
