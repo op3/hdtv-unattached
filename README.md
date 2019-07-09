@@ -63,7 +63,7 @@ It is also possible to create a pip-installable package with
 ```
 git clone https://gitlab.ikp.uni-koeln.de/staging/hdtv.git
 cd hdtv
-./hdtv/app.py
+./bin/hdtv
 ```
 
 Generate man pages:
