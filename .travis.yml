@@ -34,13 +34,16 @@ before_install:
   - bash miniconda.sh -b -p "$HOME/miniconda"
   - export PATH="$HOME/miniconda/bin:$PATH"
   - conda config --add channels conda-forge
+  - conda config --add channels op3
   - conda config --set always_yes yes --set changeps1 no
   - conda update -q conda
 install:
-  - conda install python=$PY_VER setuptools root scipy matplotlib uncertainties xorg-libx11 cmake pytest pytest-cov codecov compilers
-  - conda install -c op3 libmfile
+  - conda install python=$PY_VER setuptools root scipy matplotlib uncertainties xorg-libx11 cmake pytest pytest-cov codecov compilers libmfile
   - python setup.py install
 script:
+  - export CPATH="$HOME/miniconda/envs/base/lib:$CPATH"
+  - export LD_LIBRARY_PATH="$HOME/miniconda/envs/base/lib:$LD_LIBRARY_PATH"
+  - export LIBRARY_PATH="$HOME/miniconda/envs/base/lib:$LIBRARY_PATH"
   - pytest --cov-report term
 after_success:
   - codecov
