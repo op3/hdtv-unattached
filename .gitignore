@@ -11,7 +11,7 @@ build
 .cache
 
 # pytest-generated spectra
-test/share/test_spectrum_interpolation.tv
+test/share/test_spectrum_background.tv
 
 # coverage
 .coverage
