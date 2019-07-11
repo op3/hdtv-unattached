@@ -45,7 +45,7 @@ public:
   double GetIntBgCoeff(int i) const;
   double GetIntBgCoeffError(int i) const;
 
-  int GetIntBgDegree() const { return fIntBgDeg; }
+  int GetIntNParams() const { return fIntNParams; }
   double GetChisquare() const { return fChisquare; }
 
 protected:
@@ -54,7 +54,8 @@ protected:
 
   double fMin, fMax;
   int fNumPeaks;
-  int fIntBgDeg;
+  int fIntBgDeg; // Deprecated. For compatibility with EEFitter 
+  int fIntNParams;
   std::unique_ptr<Background> fBackground;
   std::unique_ptr<TF1> fSumFunc;
   std::unique_ptr<TF1> fBgFunc;
