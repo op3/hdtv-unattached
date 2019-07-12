@@ -80,10 +80,11 @@ def _LoadLibrary(fname):
         return ROOT.gSystem.Load(fname)
 
 
-def RebuildLibraries(libdir):
+def RebuildLibraries(libdir, libraries=None):
     if os.path.exists(libdir):
         shutil.rmtree(libdir)
-    for name in modules:
+
+    for name in libraries or modules:
         BuildLibrary(name, libdir)
 
 def PrepareBuild(libdir):
