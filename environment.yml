@@ -1,0 +1,23 @@
+name: hdtv
+channels:
+  - conda-forge
+  - op3
+  - defaults
+dependencies:
+  - python
+  - setuptools
+  - root
+  - scipy
+  - matplotlib
+  - uncertainties
+  - xorg-libx11
+  - cmake
+  - pytest
+  - pytest-cov
+  - codecov
+  - compilers
+  - libmfile
+  - ipython
+  - prompt_toolkit
+  - traits
+  - make
