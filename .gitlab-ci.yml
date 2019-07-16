@@ -1,0 +1,49 @@
+image: continuumio/miniconda3:latest
+
+# TODO: Implement build matrix for python3.6 and python3.7
+
+stages:
+  - build
+  - test
+  - deploy
+
+build:
+  stage: build
+  variables:
+    PY_VER: "3.7"
+  before_script:
+    - conda config --set always_yes yes --set changeps1 no
+    - conda update conda
+    - conda info -a
+    - sed -i -E 's/^(python)/\1='$PY_VER'/' ./environment.yml
+    - conda env create -n hdtv
+    - source activate hdtv
+    - conda list
+  script:
+    - python setup.py install
+
+tests:
+  stage: test
+  script:
+    - pytest --cov-report term
+  after_script:
+    - codecov
+
+#deploy_pip:
+#  stage: deploy
+#  script:
+#    - python setup.py bdist_wheel
+#  artifacts:
+#    paths:
+#    - dist/
+
+deploy_conda:
+  stage: deploy
+  script:
+    - echo "Not yet implemented"
+#  - conda install conda-build anaconda-client
+#  - conda build .
+#  - anaconda -t $CONDA_UPLOAD_TOKEN upload -u $CONDA_USER $CONDA_BLD_PATH/$OS/$PKG_NAME-`date +%Y.%m.%d`-0.tar.bz2
+  only:
+    - tags
+    - master
