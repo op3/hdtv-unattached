@@ -40,12 +40,16 @@ usrlibdir = os.path.join(cachepath, 'lib',
 syslibdir = os.path.join(os.path.dirname(__file__), str(ROOT.gROOT.GetVersionInt()))
 
 
-def FindLibrary(name, libname):
+def FindLibrary(name, libname, ipath=None):
     """
     Find the path to a dynamic library in a subfolder.
     Returns the full filename.
     """
-    paths = [os.path.join(usrlibdir, name), os.path.join(syslibdir, name), os.path.join(os.path.dirname(__file__), name)]
+    if ipath is None:
+        paths = []
+    else:
+        paths = [ipath]
+    paths += [os.path.join(usrlibdir, name), os.path.join(syslibdir, name), os.path.join(os.path.dirname(__file__), name)]
     for path in paths:
         fname = os.path.join(path, libname)
         if os.path.isfile(fname):
@@ -53,18 +57,18 @@ def FindLibrary(name, libname):
     return None
 
 
-def LoadLibrary(name):
+def LoadLibrary(name, path=None, try_rebuild=True):
     """
     Load a dynamic library. Try to find and load it, or rebuild it on fail
     """
     loaded = False
     libname = libfmt % name
-    fname = FindLibrary(name, libname)
+    fname = FindLibrary(name, libname, path)
     if fname:
         loaded = (_LoadLibrary(fname) >= 0)
 
-    if not loaded:
-        fname = BuildLibrary(name, usrlibdir)
+    if not loaded and try_rebuild:
+        fname = BuildLibrary(name, usrlibdir, path)
         loaded = (_LoadLibrary(fname) >= 0)
 
     if not loaded:
@@ -96,12 +100,12 @@ def PrepareBuild(libdir):
     shutil.copy(os.path.join(srcdir, "Makefile.def"), libdir)
     shutil.copy(os.path.join(srcdir, "Makefile.body"), libdir)
 
-def BuildLibrary(name, libdir):
+def BuildLibrary(name, libdir, srcdir=None):
     PrepareBuild(libdir)
 
     dir = os.path.join(libdir, name)
     hdtv.ui.info("Rebuild library %s in %s" % ((libfmt % name), dir))
-    srcdir = os.path.dirname(__file__)
+    srcdir = srcdir or os.path.dirname(__file__)
 
     # Remove existing plugin
     if os.path.exists(dir):
