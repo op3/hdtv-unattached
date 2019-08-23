@@ -14,7 +14,7 @@ build
 test/share/test_spectrum_background.tv
 test/share/binning_h1.tv
 test/share/binning_h2.tv
-test/share/*.bat
+test/share/*.hdtv
 
 # coverage
 .coverage
