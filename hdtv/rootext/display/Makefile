@@ -10,6 +10,6 @@ LDFLAGS  += $(LIBX11_LDFLAGS)
 
 LDLIBS   += $(ROOT_GLIBS) -lX11
 
-ROOT_CLING_FLAGS += $(LIBX11_CFLAGS)
+ROOT_CLING_FLAGS += $(LIBX11_CFLAGS) -I../calibration
 
 include ../Makefile.body
