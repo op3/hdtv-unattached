@@ -10,12 +10,6 @@ build
 # pytest cache
 .cache
 
-# pytest-generated spectra
-test/share/test_spectrum_background.tv
-test/share/binning_h1.tv
-test/share/binning_h2.tv
-test/share/*.hdtv
-
 # coverage
 .coverage
 .hypothesis
