@@ -19,7 +19,7 @@ To build and run HDTV, the following dependencies are required:
 * python-scipy
 * python-matplotlib
 * python-numpy
-* [python-prompt_toolkit](https://github.com/jonathanslenders/python-prompt-toolkit)
+* [python-prompt_toolkit](https://github.com/jonathanslenders/python-prompt-toolkit)>=2.0.10
 * [python-uncertainties](https://github.com/lebigot/uncertainties)
 * python-docutils (*build, for the documentation*)
 * [IPython](https://ipython.org/)
