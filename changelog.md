@@ -3,6 +3,7 @@
 ## Unreleased
 - Add GUI-dummy for usage with unit tests (@opapst)
 - Add coverage to unittests (@opapst)
+- Add better fitting: Integration and poisson statistics (@opapst)
 - Add display of fit residuals (`R` key or `fit show residuals`) (@opapst)
 - Add exponential background model (@ugayer)
 - Add hdtv.app:App() entrypoint instead of script (@opapst)
@@ -18,7 +19,7 @@
 - Fix typedef (@jmayer)
 - Fix wrong cut axis from mfile matrices (@mweinert)
 - Move Calibration.hh into separate module (@opapst)
-- Remove Python2.7 support due to upcoming EOL (@opapst)
+- Remove Python2.7 support due to EOL (@opapst)
 - Remove dead code (@opapst)
 - Remove usage of global variables and usage of `__main__` namespace (@opapst)
 - Renamed `%` to `!` to execute batch files for compatibility reasons (@opapst)
