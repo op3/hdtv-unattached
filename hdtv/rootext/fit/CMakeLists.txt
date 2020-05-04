@@ -4,8 +4,10 @@ project(fit LANGUAGES CXX)
 
 set(SOURCES
     EEFitter.cc
+    ExpBg.cc
     Fitter.cc
     Integral.cc
+    InterpolationBg.cc
     Param.cc
     PolyBg.cc
     TheuerkaufFitter.cc
@@ -14,8 +16,11 @@ set(SOURCES
 set(HEADERS
     Background.hh
     EEFitter.hh
+    ExpBg.hh
     Fitter.hh
     Integral.hh
+    InterpolationBg.hh
+    Option.hh
     Param.hh
     PolyBg.hh
     TheuerkaufFitter.hh
